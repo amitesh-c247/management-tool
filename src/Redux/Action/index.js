@@ -1,9 +1,8 @@
 import { createAction } from "redux-actions";
 
-export * from "./login"
-export * from "./signup"
-export * from "./blog"
-export * from "./movies"
+export * from "./login";
+export * from "./signup";
+
 //
 export const redirectTo = createAction("REDIRET_TO");
 //
