@@ -14,8 +14,8 @@ class Login extends React.Component {
   }
 
   componentDidMount = () => {
-    const data = JSON.parse(localStorage.getItem("data"))
-    if (data && data.token) {
+    const data = localStorage.getItem("token")
+    if (data ) {
       this.props.history.push('/dashboard')
     }
   }

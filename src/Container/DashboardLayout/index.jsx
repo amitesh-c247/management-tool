@@ -5,10 +5,10 @@ import Footer from "../../Components/footer";
 import { Row, Col, Card, Container } from "react-bootstrap";
 
 
-const data = JSON.parse(localStorage.getItem("data"));
+const data = localStorage.getItem("token");
 const  DashboardLayout =props=>(
       <div >
-        <Header token={data && data.token ? data.token : null} {...props.children.props} />
+        <Header token={data ? data : null} {...props.children.props} />
         <Container >
           <Row>
             <Col md={"3"} sm={"3"} className={"dashboard-left "}>

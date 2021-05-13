@@ -1,12 +1,14 @@
 import React from 'react';
-import { Card} from 'react-bootstrap';
+import { Button, Card} from 'react-bootstrap';
 
 
 class DashboardComponents extends React.Component {
   render() {
     return (
       <>
-          <h1 className={"text-center pt-4 pb-4"}>Dashboard</h1>
+          <div>
+            <h1 className={"text-center pt-4 pb-4"}>Dashboard</h1>
+          </div>
           <Card className={"mb-4"}>
             <Card.Body>
               <Card.Title className={"text-capitalize"}>dfdsfdsf</Card.Title>

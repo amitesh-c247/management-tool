@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Row, Col, Container, Form, Button } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { signupRequest } from "../../Redux/Action"
-import loginFormSchema from "../../Helper/singupValidSchema"
+import loginFormSchema from "../../Helper/ValidSchema"
 
 class Signup extends React.Component {
   constructor(props) {
@@ -21,8 +21,8 @@ class Signup extends React.Component {
   }
 
   componentDidMount = () => {
-    const data = JSON.parse(localStorage.getItem("data"))
-    if (data && data.token) {
+    const data = localStorage.getItem("token")
+    if (data) {
       this.props.history.push('/dashboard')
     }
   }

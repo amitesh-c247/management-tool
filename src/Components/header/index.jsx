@@ -4,7 +4,7 @@ import { DropdownButton, Dropdown } from "react-bootstrap";
 
 class Header extends React.Component {
   logOut = () => {
-    localStorage.removeItem("data");
+    localStorage.removeItem("token");
     this.props.history.push("/login");
   };
 
@@ -28,9 +28,14 @@ class Header extends React.Component {
             <ul className={"nav ml-auto"}>
               <li className="nav-item ml-auto">
                 {!token ? (
+                  <div className={"d-flex"}>
                   <Link className="nav-link active" to="/login">
                     Login
                   </Link>
+                  <Link className="nav-link active" to="/signup">
+                      Signup
+                  </Link>
+                  </div>
                 ) : (
                   <div className={"d-flex"}>
                     <DropdownButton

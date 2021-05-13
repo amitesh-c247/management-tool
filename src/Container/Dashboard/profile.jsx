@@ -3,17 +3,17 @@ import ProfileComponent from '../../Components/profile';
 
 class Profile extends React.Component {
   componentDidMount = () => {
-    const data = JSON.parse(localStorage.getItem("data"))
-    if (data && !data.token) {
+    const data = localStorage.getItem("token")
+    if (!data) {
       this.props.history.push('/')
     }
   }
 
   render() {
-    const data = JSON.parse(localStorage.getItem("data"))
+    const data = localStorage.getItem("token")
     return (
       <>
-        <ProfileComponent data={data} />
+        <ProfileComponent />
       </>
     );
   }

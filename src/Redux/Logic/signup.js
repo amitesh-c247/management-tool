@@ -7,8 +7,6 @@ import {
 } from "../Action";
 import { Toaster } from "../../Components/Common/toast";
 
-
-let tokenNumber = Math.random().toString(36).substr(2);
 let api = new ApiHelper();
 /**
  *
@@ -19,34 +17,28 @@ const signupLogic = createLogic({
     try {
       const { user_name, email, password } = action.payload
       if (email !== "" && password !== "" && user_name !== "") {
-        const storageData = {
-          "token": tokenNumber, user_name, email, password
+        const result = await api.FetchFromServer(
+            ApiRoutes.SIGNUP.url,
+            ApiRoutes.SIGNUP.method,
+            undefined,
+            undefined,
+            action.payload
+       );
+        if (result) {
+          localStorage.setItem('token', result.data.bearer);
+          dispatch(redirectTo({ path: "/dashboard" }));
+          Toaster({ type: 'success', message: 'Signed in successfully' })
+          done();
+        } else {
+          Toaster({ type: 'Erro', message: 'Error In signed in' })
+          done();
         }
-        localStorage.setItem("data", JSON.stringify(storageData));
-
-        Toaster({ type: 'success', message: 'Signed in successfully' })
-        dispatch(redirectTo({ path: "/dashboard" }));
-      }
+       }
       else {
         Toaster({ type: 'error', message: 'Error in Signed in' })
-      }
+       }
       done();
-        // let api = new ApiHelper();
-        // let result = await api.FetchFromServer(
-        // ApiRoutes.SIGNUP.url,
-        // "GET",
-        // false,
-        // undefined,
-        // undefined
-        // )
-        // if(result && result.data){
-        // const movies = [];
-        // movies.push(result.data);
-        // dispatch(moviesSuccess(movies));
-        // }
-        // else{
-        //     console.log(result);
-        // }
+
         // done();
     } catch (error) {
       console.log("=================");

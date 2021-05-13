@@ -1,9 +1,8 @@
-const ApiRoutes = {
+export const ApiRoutes = {
     SIGNUP: {
       service: '',
-      url: '/signup',
+      url: 'http://localhost:3000/SignUpUser',
       method: 'POST',
       authenticate: false,
     }
 }
-export default ApiRoutes
