@@ -11,7 +11,7 @@ export default loginFormSchema
 export const profileFormSchema = yup.object().shape({
     firstName:yup.string().required("First Name is required."),
     email: yup.string().required("email is required").email("Valid email is required"),
-    contact_number:yup.number("Please enter numeric vaues.").required("Contact number is required.").positive().integer(),
+    contact_number:yup.number("Please enter numeric vaues.").required("Contact number is required."),
     address:yup.string().required("Address is required"),
 });
 

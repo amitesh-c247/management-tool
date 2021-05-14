@@ -12,15 +12,14 @@ const ProfileComponent = (props) => {
     address:'', 
     dob:'',
   }
-  const errors = {
+  const errorsState = {
       firstName:'', 
-      lastName:'',
       email:'', 
       contact_number:'', 
       address:'', 
   }
   const [inputs,setInputs] = useState(initialStates);
-  const [error,setError] = useState(errors);
+  const [errors,setError] = useState(errorsState);
 
   useEffect(() => {
 
@@ -38,7 +37,6 @@ const ProfileComponent = (props) => {
     e.preventDefault();
     profileFormSchema.validate({
       firstName:'', 
-      lastName:'',
       email:'', 
       contact_number:'', 
       address:'', 
@@ -46,14 +44,24 @@ const ProfileComponent = (props) => {
       .then(
         console.log("Success")
       ).catch(err => {
+        let tempErrors={}
         err.inner.forEach(error => {
+          tempErrors = {
+          ...tempErrors,
+          [error.path]: error.message
+        }
           //errors = { ...errors, [error.path]: error.message };
-          console.log(error.message,"errors")
-          setError({
-            error : error.message
-          })
+          console.log(tempErrors,"tempErrors")
+          
         });
-      });
+        setError({
+          ...errors,
+          ...tempErrors
+        })
+        console.log(errors,"errors  main code")
+      }
+
+      );
 
   }
   
@@ -72,7 +80,7 @@ const ProfileComponent = (props) => {
                 name="firstName"
                 onChange={handleChange}
               />
-              {errors.firstName}
+              <p className="text-danger">{errors.firstName}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Last name</Form.Label>
@@ -93,7 +101,7 @@ const ProfileComponent = (props) => {
                 name="email"
                 onChange={handleChange}
               />
-              {errors.email}
+              <p className="text-danger">{errors.email}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Contact Number</Form.Label>
@@ -104,7 +112,7 @@ const ProfileComponent = (props) => {
                 name="contact_number"
                 onChange={handleChange}
               />
-              {errors.contact_number}
+              <p className="text-danger">{errors.contact_number}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Address</Form.Label>
@@ -115,7 +123,7 @@ const ProfileComponent = (props) => {
                 name="address"
                 onChange={handleChange}
               />
-              {errors.address}
+              <p className="text-danger">{errors.address}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Date of Birth</Form.Label>
