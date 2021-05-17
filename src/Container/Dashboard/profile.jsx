@@ -10,7 +10,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    const data = localStorage.getItem("token")
     return (
       <>
         <ProfileComponent />

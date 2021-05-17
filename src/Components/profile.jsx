@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import moment from "moment";
+import { connect } from "react-redux";
+import { addprofileRequest } from "../Redux/Action"
 import {profileFormSchema} from "../Helper/ValidSchema"
 const ProfileComponent = (props) => {
 
@@ -10,7 +12,7 @@ const ProfileComponent = (props) => {
     email:'', 
     contact_number:'', 
     address:'', 
-    dob:'',
+    dob:moment().locale('en').format("YYYY-MM-DD"),
   }
   const errorsState = {
       firstName:'', 
@@ -30,19 +32,36 @@ const ProfileComponent = (props) => {
         ...inputs,
         [e.target.name]: e.target.value,
     });
-    console.log(inputs,"eee")
+    setError({
+      ...errors,
+      [e.target.name]:''
+    });
   }
 
   const addProfile = (e)=>{
     e.preventDefault();
     profileFormSchema.validate({
-      firstName:'', 
-      email:'', 
-      contact_number:'', 
-      address:'', 
+      firstName:inputs.firstName, 
+      email:inputs.email, 
+      contact_number:inputs.contact_number, 
+      address:inputs.address, 
     },{ abortEarly: false })
-      .then(
-        console.log("Success")
+      .then(()=>props.addprofileRequest({
+          firstName:inputs.firstName, 
+          lastName:inputs.lastName,
+          email:inputs.email, 
+          contact_number:inputs.contact_number, 
+          address:inputs.address, 
+          dob:inputs.dob,
+        }),
+          setInputs({
+          ...inputs,
+          firstName:'', 
+          lastName:'', 
+          email:'', 
+          contact_number:'', 
+          address:'', 
+          })
       ).catch(err => {
         let tempErrors={}
         err.inner.forEach(error => {
@@ -50,15 +69,11 @@ const ProfileComponent = (props) => {
           ...tempErrors,
           [error.path]: error.message
         }
-          //errors = { ...errors, [error.path]: error.message };
-          console.log(tempErrors,"tempErrors")
-          
         });
         setError({
           ...errors,
           ...tempErrors
         })
-        console.log(errors,"errors  main code")
       }
 
       );
@@ -128,9 +143,10 @@ const ProfileComponent = (props) => {
             <Form.Group >
               <Form.Label>Date of Birth</Form.Label>
               <Form.Control 
-                value={moment(inputs.dob).format("YYYY-MM-DD")} /* onChange={(e) => handleDateChange(e)} */ 
+                value={inputs.dob} /* onChange={(e) => handleDateChange(e)} */ 
                 type="date" 
-                name="date"
+                name="dob"
+                onChange={handleChange}
               />
             </Form.Group>
             <Button variant="primary" type="submit" onClick={addProfile}>
@@ -143,4 +159,16 @@ const ProfileComponent = (props) => {
   );
 }
 
-export default ProfileComponent;
+
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+  addprofileRequest: data => {
+    dispatch(addprofileRequest(data));
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileComponent);

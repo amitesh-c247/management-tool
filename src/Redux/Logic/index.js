@@ -3,6 +3,7 @@ import { push } from "react-router-redux";
 
 import { SignupLogics } from "./signup";
 import { LoginLogics } from "./login";
+import {AddProfileLogics} from "./addprofile"
 
 /* Logic action for redirecting to path of routes */
 export const redirectToLogic = createLogic({
@@ -13,4 +14,4 @@ export const redirectToLogic = createLogic({
   },
 });
 
-export default [...LoginLogics, ...SignupLogics, redirectToLogic];
+export default [...LoginLogics, ...SignupLogics, ...AddProfileLogics, redirectToLogic];
