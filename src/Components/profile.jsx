@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import moment from "moment";
+import { connect } from "react-redux";
+import { addprofileRequest } from "../Redux/Action"
 import {profileFormSchema} from "../Helper/ValidSchema"
 const ProfileComponent = (props) => {
 
@@ -10,17 +12,16 @@ const ProfileComponent = (props) => {
     email:'', 
     contact_number:'', 
     address:'', 
-    dob:'',
+    dob:moment().locale('en').format("YYYY-MM-DD"),
   }
-  const errors = {
+  const errorsState = {
       firstName:'', 
-      lastName:'',
       email:'', 
       contact_number:'', 
       address:'', 
   }
   const [inputs,setInputs] = useState(initialStates);
-  const [error,setError] = useState(errors);
+  const [errors,setError] = useState(errorsState);
 
   useEffect(() => {
 
@@ -31,29 +32,51 @@ const ProfileComponent = (props) => {
         ...inputs,
         [e.target.name]: e.target.value,
     });
-    console.log(inputs,"eee")
+    setError({
+      ...errors,
+      [e.target.name]:''
+    });
   }
 
   const addProfile = (e)=>{
     e.preventDefault();
     profileFormSchema.validate({
-      firstName:'', 
-      lastName:'',
-      email:'', 
-      contact_number:'', 
-      address:'', 
+      firstName:inputs.firstName, 
+      email:inputs.email, 
+      contact_number:inputs.contact_number, 
+      address:inputs.address, 
     },{ abortEarly: false })
-      .then(
-        console.log("Success")
-      ).catch(err => {
-        err.inner.forEach(error => {
-          //errors = { ...errors, [error.path]: error.message };
-          console.log(error.message,"errors")
-          setError({
-            error : error.message
+      .then(()=>props.addprofileRequest({
+          firstName:inputs.firstName, 
+          lastName:inputs.lastName,
+          email:inputs.email, 
+          contact_number:inputs.contact_number, 
+          address:inputs.address, 
+          dob:inputs.dob,
+        }),
+          setInputs({
+          ...inputs,
+          firstName:'', 
+          lastName:'', 
+          email:'', 
+          contact_number:'', 
+          address:'', 
           })
+      ).catch(err => {
+        let tempErrors={}
+        err.inner.forEach(error => {
+          tempErrors = {
+          ...tempErrors,
+          [error.path]: error.message
+        }
         });
-      });
+        setError({
+          ...errors,
+          ...tempErrors
+        })
+      }
+
+      );
 
   }
   
@@ -72,7 +95,7 @@ const ProfileComponent = (props) => {
                 name="firstName"
                 onChange={handleChange}
               />
-              {errors.firstName}
+              <p className="text-danger">{errors.firstName}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Last name</Form.Label>
@@ -93,7 +116,7 @@ const ProfileComponent = (props) => {
                 name="email"
                 onChange={handleChange}
               />
-              {errors.email}
+              <p className="text-danger">{errors.email}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Contact Number</Form.Label>
@@ -104,7 +127,7 @@ const ProfileComponent = (props) => {
                 name="contact_number"
                 onChange={handleChange}
               />
-              {errors.contact_number}
+              <p className="text-danger">{errors.contact_number}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Address</Form.Label>
@@ -115,14 +138,15 @@ const ProfileComponent = (props) => {
                 name="address"
                 onChange={handleChange}
               />
-              {errors.address}
+              <p className="text-danger">{errors.address}</p>
             </Form.Group>
             <Form.Group >
               <Form.Label>Date of Birth</Form.Label>
               <Form.Control 
-                value={moment(inputs.dob).format("YYYY-MM-DD")} /* onChange={(e) => handleDateChange(e)} */ 
+                value={inputs.dob} /* onChange={(e) => handleDateChange(e)} */ 
                 type="date" 
-                name="date"
+                name="dob"
+                onChange={handleChange}
               />
             </Form.Group>
             <Button variant="primary" type="submit" onClick={addProfile}>
@@ -135,4 +159,16 @@ const ProfileComponent = (props) => {
   );
 }
 
-export default ProfileComponent;
+
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+  addprofileRequest: data => {
+    dispatch(addprofileRequest(data));
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileComponent);

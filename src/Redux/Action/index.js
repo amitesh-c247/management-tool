@@ -2,7 +2,7 @@ import { createAction } from "redux-actions";
 
 export * from "./login";
 export * from "./signup";
-
+export * from "./addprofile"
 //
 export const redirectTo = createAction("REDIRET_TO");
 //
