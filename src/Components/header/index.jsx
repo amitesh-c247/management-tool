@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   logOut = () => {
     localStorage.removeItem("token");
     this.props.history.push("/login");
@@ -29,12 +33,12 @@ class Header extends React.Component {
               <li className="nav-item ml-auto">
                 {!token ? (
                   <div className={"d-flex"}>
-                  <Link className="nav-link active" to="/login">
-                    Login
-                  </Link>
-                  <Link className="nav-link active" to="/signup">
+                    <Link className="nav-link active" to="/login">
+                      Login
+                    </Link>
+                    <Link className="nav-link active" to="/signup">
                       Signup
-                  </Link>
+                    </Link>
                   </div>
                 ) : (
                   <div className={"d-flex"}>
