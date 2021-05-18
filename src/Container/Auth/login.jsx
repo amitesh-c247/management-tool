@@ -7,7 +7,6 @@ const Login = (props) => {
   const initialStates = {
     email: "",
     password: "",
-    token: "",
   };
   const errorsState = {
     email: "",
@@ -40,16 +39,11 @@ const Login = (props) => {
         { abortEarly: false }
       )
       .then(
-        () =>
-          props.addprofileRequest({
-            email: inputs.email,
-            password: inputs.password,
-          }),
-        setInputs({
-          ...inputs,
-          email: "",
-          password: "",
+        props.loginRequest({
+          email: inputs.email,
+          password: inputs.password,
         })
+        // console.log(inputs, "=============")
       )
       .catch((err) => {
         let tempErrors = {};
