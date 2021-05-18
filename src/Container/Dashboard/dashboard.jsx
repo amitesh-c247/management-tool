@@ -1,5 +1,5 @@
-import React from 'react';
-import DashboardComponents from '../../Components/dashboard'
+import React from "react";
+import DashboardComponents from "../../Components/dashboard";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -8,14 +8,14 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount = () => {
-    const data = localStorage.getItem("token")
-    if (!data ) {
-      this.props.history.push('/')
+    const data = localStorage.getItem("token");
+    console.log(data, "=====data====");
+    if (!data) {
+      this.props.history.push("/");
     }
-  }
+  };
 
   render() {
-
     return (
       <>
         <DashboardComponents />
